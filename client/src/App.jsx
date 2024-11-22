@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import AdminManagment from "./pages/AdminManagment";
 
 const App = () => {
-  return (
+  return ( 
     <Router>
 
       <Routes>

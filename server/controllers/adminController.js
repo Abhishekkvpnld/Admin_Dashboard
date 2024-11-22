@@ -36,7 +36,7 @@ export const adminLogin = async (req, res) => {
       createdAt: checkUser.createdAt,
     };
 
-    const token = await jwt.sign(userData, process.env.JWT_SECRET_KEY, {
+    const token = jwt.sign(userData, process.env.JWT_SECRET_KEY, {
       expiresIn: "24h",
     });
 
@@ -44,7 +44,13 @@ export const adminLogin = async (req, res) => {
       throw new Error("Token generation failed");
     }
 
-    res.status(200).json({
+    const tokenOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite:"None"
+  };
+
+    res.cookie("token",token,tokenOption).status(200).json({
       success: true,
       error: false,
       message: "Logged in Successfully...✅",
@@ -206,6 +212,10 @@ export const searchUser = async (req, res) => {
     const { username } = req.query;
     const userId = req.user.id;
 
+    if (!username) {
+      throw new Error("Please enter a username to search...");
+    }
+
     const requestingUser = await userModel.findById(userId);
     if (!requestingUser) {
       throw new Error("Requesting user not found...❌");
@@ -217,6 +227,10 @@ export const searchUser = async (req, res) => {
 
     const regExp = new RegExp(username, "i");
     const allDoc = await userModel.find({ userName: { $regex: regExp } });
+
+    if (allDoc.length === 0) {
+      throw new Error("No users found with the given username...❌");
+    }
 
     res.status(200).json({
       success: true,
@@ -241,6 +255,31 @@ export const filterUser = async (req, res) => {
       success: false,
       error: true,
       message: error.message,
+    });
+  }
+};
+
+export const adminLogout = async (req, res) => {
+  try {
+    const tokenOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    };
+    res.clearCookie("token", tokenOption);
+
+    res.status(200).json({
+      message: "Logged out successfully...🎉",
+      data: [],
+      success: true,
+      error: false,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error.message || error,
+      success: false,
+      error: true,
     });
   }
 };
