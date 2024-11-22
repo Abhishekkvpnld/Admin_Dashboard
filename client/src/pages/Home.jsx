@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { IoPersonAddOutline } from "react-icons/io5";
+import { HiOutlineUserAdd } from "react-icons/hi";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { SiManageiq } from "react-icons/si";
 import { TbBrandGoogleAnalytics } from "react-icons/tb";
@@ -16,7 +16,7 @@ const Home = () => {
       <Link to={"/new-user"}
         className="bg-white hover:bg-blue-100 p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition cursor-pointer"
       >
-        <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><IoPersonAddOutline className="font-bold"/>Add New User</h2>
+        <h2 className="text-xl font-semibold mb-2 flex items-center gap-2"><HiOutlineUserAdd size={25} className="font-bold"/>Add New User</h2>
         <p className="text-gray-600">Create a new user account for the system.</p>
       </Link>
 
