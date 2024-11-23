@@ -1,3 +1,4 @@
-import {baseUrl} from "../utils/base_api";
+
+const baseUrl = import.meta.env.VITE_BACKEND_URL
 
 export const BACKEND_URL = `${baseUrl}/api`;

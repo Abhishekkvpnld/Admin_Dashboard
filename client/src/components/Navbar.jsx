@@ -17,13 +17,13 @@ const navigate = useNavigate();
                     <span><img className="rounded-full w-12 h-12" src="/admin-dashboard-icon.png" alt="img" /></span> Admin
                 </Link>
 
-                <div className="hidden md:flex items-center justify-between gap-2 pr-2 border-2 rounded-md w-[40%]">
+                {/* <div className="hidden md:flex items-center justify-between gap-2 pr-2 border-2 rounded-md w-[40%]">
                     <input type="text" placeholder="Search username..." className="px-2 py-1 rounded-md w-[100%]" />
                     <span className="flex text-xl gap-1">
                         <IoIosClose title="clear" className="text-white hidden bg-red-600 rounded-full hover:scale-125 transition-all" />
                         <IoIosSearch title="search" className="hover:scale-125 cursor-pointer transition-all" />
                     </span>
-                </div>
+                </div> */}
 
                 <div className="flex gap-5 items-center">
                     <div className="flex items-center justify-center">

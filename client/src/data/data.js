@@ -9,7 +9,7 @@ export const roles = [
 ];
 export const filterData = [
   { value: "Active", label: "Active" },
-  { value: "InActive", label: "Inactive" },
+  { value: "InActive", label: "InActive" },
   { value: "User", label: "User" },
   { value: "CreatedAt", label: "Creation Date" },
   { value: "Admin", label: "Admin" },

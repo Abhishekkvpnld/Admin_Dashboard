@@ -1,0 +1,58 @@
+[
+    {
+        "userName": "Abhishek",
+        "password": "$2b$10$Ws.SO2HIszr3x24.xs9ORuhY1VD5CmpRb7O2dvzJf9SnrxlemH7AO",
+        "role": "User",
+        "phone": 1234567890,
+        "email": "abhishek@gmail.com",
+        "status": "Active",
+        "createdAt": "2024-11-23T09:30:27.913+00:00",
+        "updatedAt": "2024-11-23T09:30:27.913+00:00",
+        "__v": 0
+    },
+    {
+        "userName": "Anjali",
+        "password": "$2b$10$8NJpMnb1x4eOrC.mzHETJuTOa7t8b46kYdd9TjIXcD2PrtpqWEeQS",
+        "role": "Admin",
+        "phone": 9876543210,
+        "email": "anjali@gmail.com",
+        "status": "InActive",
+        "createdAt": "2024-11-23T09:32:00.000+00:00",
+        "updatedAt": "2024-11-23T09:32:00.000+00:00",
+        "__v": 0
+    },
+    {
+        "userName": "Rahul",
+        "password": "$2b$10$YVP9M0TvPeJ4UbVp6kwxH.wEqIGh0Zb3Tjsg4H6RUhgDk1xYXRa.C",
+        "role": "User",
+        "phone": 1122334455,
+        "email": "rahul@gmail.com",
+        "status": "Active",
+        "createdAt": "2024-11-23T09:34:00.000+00:00",
+        "updatedAt": "2024-11-23T09:34:00.000+00:00",
+        "__v": 0
+    },
+    {
+        "userName": "Sneha",
+        "password": "$2b$10$kpByxqXa4QO0Sh9WWU.DBOvdFNj41Oj8W2eF6PBRIDKmB1Z80fNNG",
+        "role": "Admin",
+        "phone": 9988776655,
+        "email": "sneha@gmail.com",
+        "status": "InActive",
+        "createdAt": "2024-11-23T09:36:00.000+00:00",
+        "updatedAt": "2024-11-23T09:36:00.000+00:00",
+        "__v": 0
+    },
+    {
+        "userName": "Vivek",
+        "password": "$2b$10$kg.2RxsRC/UxeRJc7jZCOuJufKWCICNugMAlZfgmiOW9Um.OEhozy",
+        "role": "User",
+        "phone": 5566778899,
+        "email": "vivek@gmail.com",
+        "status": "Active",
+        "createdAt": "2024-11-23T09:38:00.000+00:00",
+        "updatedAt": "2024-11-23T09:38:00.000+00:00",
+        "__v": 0
+    }
+
+]
