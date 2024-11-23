@@ -1,10 +1,9 @@
 import { roles, status } from "../data/data";
 import moment from "moment";
+import { MdOutlineDelete } from "react-icons/md";
 
 
-const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus }) => {
-
-
+const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus,handleDeleteUser }) => {
 
   return (
     <div className="md:block px-4 py-2 rounded-md w-full overflow-x-scroll">
@@ -19,6 +18,7 @@ const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus }) =
             <th className="px-4 py-2 text-left">Created At</th>
             <th className="px-4 py-2 text-left">Role</th>
             <th className="px-4 py-2 text-left">Status</th>
+            <th className="px-4 py-2 text-left"></th>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +55,7 @@ const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus }) =
                     ))}
                   </select>
                 </td>
+                <td><MdOutlineDelete onClick={()=>handleDeleteUser(user?._id)} className="text-red-700 border rounded-full hover:scale-125 hover:bg-red-600 hover:text-white transition" title="Delete" size={25}/></td>
               </tr>
             ))
           }

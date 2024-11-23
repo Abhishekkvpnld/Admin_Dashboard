@@ -8,6 +8,7 @@ export const roles = [
   { value: "Admin", label: "Administrator" },
 ];
 export const filterData = [
+  { value: "", label: "Filter" },
   { value: "Active", label: "Active" },
   { value: "InActive", label: "InActive" },
   { value: "User", label: "User" },

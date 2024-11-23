@@ -47,15 +47,18 @@ export const adminLogin = async (req, res) => {
     const tokenOption = {
       httpOnly: true,
       secure: true,
-      sameSite:"None"
-  };
+      sameSite: "None",
+    };
 
-    res.cookie("token",token,tokenOption).status(200).json({
-      success: true,
-      error: false,
-      message: "Logged in Successfully...✅",
-      data: { user: checkUser, token },
-    });
+    res
+      .cookie("token", token, tokenOption)
+      .status(200)
+      .json({
+        success: true,
+        error: false,
+        message: "Logged in Successfully...✅",
+        data: { user: checkUser, token },
+      });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -66,25 +69,24 @@ export const adminLogin = async (req, res) => {
   }
 };
 
-export const allUsers = async(req,res)=>{
+export const allUsers = async (req, res) => {
   try {
-      const fetchAllUsers = await userModel.find();
-      
-      res.status(200).json({
-          success:true,
-          error:false,
-          data:fetchAllUsers
-      })
-      
+    const fetchAllUsers = await userModel.find();
+
+    res.status(200).json({
+      success: true,
+      error: false,
+      data: fetchAllUsers,
+    });
   } catch (error) {
-      console.log(error);
-      res.status(500).json({
-          success:false,
-          error:true,
-          message:error.message
-      })
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: true,
+      message: error.message,
+    });
   }
-}
+};
 
 export const userRoleUpdate = async (req, res) => {
   try {
@@ -141,16 +143,16 @@ export const userRoleUpdate = async (req, res) => {
 export const userStatusUpdate = async (req, res) => {
   try {
     const { status, id } = req.body;
-    // const userId = req.user.id;
+    const userId = req.user.id;
 
-    // const requestingUser = await userModel.findById(userId);
-    // if (!requestingUser) {
-    //   throw new Error("Requesting user not found...❌");
-    // }
+    const requestingUser = await userModel.findById(userId);
+    if (!requestingUser) {
+      throw new Error("Requesting user not found...❌");
+    }
 
-    // if (requestingUser.role !== "Admin") {
-    //   throw new Error("Permission denied. Only Admins can update roles.");
-    // }
+    if (requestingUser.role !== "Admin") {
+      throw new Error("Permission denied. Only Admins can update roles.");
+    }
 
     const updateUser = await userModel.findById(id);
     if (!updateUser) {
@@ -193,7 +195,7 @@ export const userStatusUpdate = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const userId = req.user.id;
 
     const requestingUser = await userModel.findById(userId);
