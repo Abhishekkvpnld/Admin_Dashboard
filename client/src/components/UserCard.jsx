@@ -3,7 +3,7 @@ import moment from "moment";
 import { MdOutlineDelete } from "react-icons/md";
 
 
-const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus,handleDeleteUser }) => {
+const UserCard = ({ users, handleUpdateRole, handleUpdateStatus, handleDeleteUser }) => {
 
   return (
     <div className="md:block px-4 py-2 rounded-md w-full overflow-x-scroll">
@@ -34,7 +34,8 @@ const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus,hand
                 <td className="px-4 py-2">{user?.phone}</td>
                 <td className="px-4 py-2">{moment(user?.createdAt).format("YYYY-MM-DD")}</td>
                 <td className="px-4 py-2">
-                  <select name="role" id="role" value={user?.role} onChange={(e) => handleUpdateRole(user?._id, e.target.value)} className={`border text-sm font-semibold rounded p-1 bg-violet-50 ${user?.role === "Admin" ? "bg-blue-700 text-white" : ''}`}>
+
+                  <select name="role" id="role" value={user?.role} onChange={(e) => handleUpdateRole(user?._id, e.target.value)} className={`border text-sm font-semibold rounded p-1 ${user?.role === "Admin" ? "bg-blue-700 text-white" : ''}`}>
                     {roles.map((item, index) => (
                       <option className="bg-blue-200" key={index} value={item.value}>
                         {item.label}
@@ -42,6 +43,7 @@ const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus,hand
                     ))}
                   </select>
                 </td>
+
                 <td className="px-4 py-2">
                   <select name="status" value={user?.status} onChange={(e) => handleUpdateStatus(user?._id, e.target.value)} id="status" className={`${user?.status === "Active" ? "bg-green-600 text-white" : "bg-red-600 text-white"} border text-sm font-semibold rounded p-1`}>
                     {status.map((item, index) => (
@@ -55,7 +57,7 @@ const UserCard = ({ users, setUserRole, handleUpdateRole,handleUpdateStatus,hand
                     ))}
                   </select>
                 </td>
-                <td><MdOutlineDelete onClick={()=>handleDeleteUser(user?._id)} className="text-red-700 border rounded-full hover:scale-125 hover:bg-red-600 hover:text-white transition" title="Delete" size={25}/></td>
+                <td><MdOutlineDelete onClick={() => handleDeleteUser(user?._id)} className="text-red-700 border rounded-full hover:scale-125 hover:bg-red-600 hover:text-white transition" title="Delete" size={25} /></td>
               </tr>
             ))
           }

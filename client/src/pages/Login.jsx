@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { IoMdLogIn } from "react-icons/io";
+import { BACKEND_URL } from "../utils/base_api";
+import { userDataContext } from "../context/UserContext";
 
 const Login = () => {
 
+  const { userData, setUserData } = useContext(userDataContext);
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +20,15 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const res = await axios.post(`${BACKEND_URL}/admin/login`, data, { withCredentials: true });
+    if (res?.data?.success) {
+      navigate("/");
+      setUserData(userData);
+      toast.success(res?.data?.message)
+    } else {
+      toast.error("error")
+    }
 
   };
 
@@ -39,14 +51,14 @@ const Login = () => {
       <div className='border border-blue-500 w-full py-2 mx-auto rounded p-3  '>
 
         <div className="font-bold m-4 text-center ">
-          <h1 className="flex items-center gap-3">Welcome Back! Login to Your Account <IoMdLogIn size={30}/></h1>
+          <h1 className="flex items-center gap-3">Welcome Back! Login to Your Account <IoMdLogIn size={30} /></h1>
         </div>
 
         <form onSubmit={handleLogin} className='flex flex-col gap-2'>
 
           <div className="w-full font-semibold">
-            <label htmlFor="email">Email</label>
-            <div className='bg-slate-100 p-2 rounded'>
+            <label htmlFor="email" className="text-slate-500">Email</label>
+            <div className='bg-slate-100  rounded'>
               <input
                 type="email"
                 name="email"
@@ -55,13 +67,13 @@ const Login = () => {
                 onChange={handleOnChange}
                 id="email"
                 placeholder='enter email...'
-                className='w-full h-full outline-none bg-transparent' />
+                className='w-full h-full outline-none bg-transparent p-2 rounded-md' />
             </div>
           </div>
 
 
           <div className="w-full font-semibold">
-            <label htmlFor="password">Password</label>
+            <label className="text-slate-500" htmlFor="password">Password</label>
             <div className='bg-slate-100 p-2 rounded flex items-center'>
               <input
                 type={showPassword ? "text" : "password"}

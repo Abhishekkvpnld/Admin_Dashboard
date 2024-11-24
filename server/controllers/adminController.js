@@ -69,6 +69,36 @@ export const adminLogin = async (req, res) => {
   }
 };
 
+export const fetchUserData = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    if (!userId) {
+      throw new Error("Please login first...🔐");
+    }
+
+    const userData = await userModel.findById(userId).lean();
+    if (!userData) {
+      throw new Error("User not found...❌");
+    }
+
+    delete userData.password;
+
+    res.status(200).json({
+      success: true,
+      error: false,
+      data: userData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: true,
+      message: error.message,
+    });
+  }
+};
+
 export const allUsers = async (req, res) => {
   try {
     const fetchAllUsers = await userModel.find();
@@ -91,27 +121,27 @@ export const allUsers = async (req, res) => {
 export const userRoleUpdate = async (req, res) => {
   try {
     const { role, id } = req.body;
-    // const userId = req.user.id;
+    const userId = req.user._id;
 
-    // const requestingUser = await userModel.findById(userId);
-    // if (!requestingUser) {
-    //   throw new Error("Requesting user not found...❌");
-    // }
+    const requestingUser = await userModel.findById(userId);
+    if (!requestingUser) {
+      throw new Error("Requesting user not found...❌");
+    }
 
     // Check if the requesting user is an Admin
-    // if (requestingUser.role !== "Admin") {
-    //   throw new Error("Permission denied. Only Admins can update roles.");
-    // }
+    if (requestingUser.role !== "Admin") {
+      throw new Error("Permission denied. Only Admins can update roles.");
+    }
 
     const updateUser = await userModel.findById(id);
     if (!updateUser) {
       throw new Error("User not Found...❌");
     }
 
-    // const validRoles = ["User", "Admin"];
-    // if (!validRoles.includes(role)) {
-    //   throw new Error("Invalid role specified. Must be 'User' or 'Admin'.");
-    // }
+    const validRoles = ["User", "Admin"];
+    if (!validRoles.includes(role)) {
+      throw new Error("Invalid role specified. Must be 'User' or 'Admin'.");
+    }
 
     updateUser.role = role;
     await updateUser.save();
@@ -143,7 +173,7 @@ export const userRoleUpdate = async (req, res) => {
 export const userStatusUpdate = async (req, res) => {
   try {
     const { status, id } = req.body;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const requestingUser = await userModel.findById(userId);
     if (!requestingUser) {
@@ -196,7 +226,7 @@ export const userStatusUpdate = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const requestingUser = await userModel.findById(userId);
     if (!requestingUser) {
@@ -232,7 +262,7 @@ export const deleteUser = async (req, res) => {
 export const searchUser = async (req, res) => {
   try {
     const { username } = req.query;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     if (!username) {
       throw new Error("Please enter a username to search...");
@@ -251,26 +281,20 @@ export const searchUser = async (req, res) => {
     const allDoc = await userModel.find({ userName: { $regex: regExp } });
 
     if (allDoc.length === 0) {
-      throw new Error("No users found with the given username...❌");
+      return res.status(200).json({
+        success: true,
+        error: false,
+        message: "No users found with the given username...❌",
+        data: allDoc || [],
+      });
     }
 
     res.status(200).json({
       success: true,
       error: false,
-      data: allDoc || [],
+      data: allDoc,
+      message: "user found✅",
     });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      error: true,
-      message: error.message,
-    });
-  }
-};
-
-export const filterUser = async (req, res) => {
-  try {
   } catch (error) {
     console.log(error);
     res.status(500).json({

@@ -3,14 +3,20 @@ import UserCard from "../components/UserCard";
 import axios from "axios";
 import { filterData } from "../data/data";
 import { BACKEND_URL } from "../utils/base_api";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Navigate } from "react-router-dom";
+import { userDataContext } from "../context/UserContext";
 
 const AdminManagment = () => {
 
+  const userData = useContext(userDataContext);
+
   const [users, setUsers] = useState([]);
   const [userRole, setUserRole] = useState(users?.role);
-  const [userStatus, setUserStatus] = useState([])
+  const [userStatus, setUserStatus] = useState([]);
+  const [searchData, setSearchData] = useState("");
+
 
 
   const handleUpdateRole = async (id, role) => {
@@ -67,27 +73,46 @@ const AdminManagment = () => {
     if (res?.data?.success) {
       setUsers(res?.data?.data)
     }
+  };
+
+  const handleSearch = async () => {
+    if (searchData) {
+      const res = await axios.get(`${BACKEND_URL}/admin/search?username=${searchData}`, { withCredentials: true });
+      if (res?.data?.success) {
+        setUsers(res?.data?.data);
+        toast.success(res?.data?.message)
+      }
+    } else {
+      toast.error("Please enter username...❌")
+    }
   }
+
 
   useEffect(() => {
     fetchAllUsers();
   }, [userRole, userStatus]);
 
+
+  if (!userData?._id) {
+    return <Navigate to={"/login"} />
+  }
+
+
   return (
     <div className="flex items-center justify-start flex-col gap-2 w-[100vw] p-3">
       <h1 className="font-bold m-3">User List and Controls</h1>
 
-      <div className="flex-row flex items-center justify-between px-4 gap-3 w-[100vw]"> 
+      <div className="flex-row flex items-center justify-between px-4 gap-3 w-[100vw]">
 
         <div className="flex items-center justify-between gap-2 pr-2 border-2 rounded-md w-[50%]">
-          <input type="text" placeholder="Search username..." className="px-2 py-1 rounded-md w-[100%]" />
+          <input type="text" placeholder="Search username..." className="px-2 py-1 rounded-md w-[100%]" value={searchData} onChange={(e) => setSearchData(e.target.value)} />
           <span className="flex text-xl gap-1">
-            <IoIosClose title="clear" className="text-white hidden bg-red-600 rounded-full hover:scale-125 transition-all" />
-            <IoIosSearch title="search" className="hover:scale-125 cursor-pointer transition-all" />
+            <IoIosClose onClick={() => setSearchData("")} title="clear" className={`text-white ${searchData ? "block" : "hidden"} bg-red-600 rounded-full hover:scale-125 transition-all`} />
+            <IoIosSearch title="search" className="hover:scale-125 cursor-pointer transition-all" onClick={handleSearch} />
           </span>
         </div>
 
-        <select name="status" id="status"  onChange={(e) => handleFilterData(e.target.value)} className=" border border-black   text-sm font-semibold rounded p-1">
+        <select name="status" id="status" onChange={(e) => handleFilterData(e.target.value)} className=" border border-black   text-sm font-semibold rounded p-1">
           {filterData.map((item, index) => (
             <option
               className={"bg-slate-100 px-2 font-semibold hover:bg-slate-200"}

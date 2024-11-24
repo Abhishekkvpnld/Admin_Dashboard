@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import { userDataContext } from "../context/UserContext";
+import { Navigate } from "react-router-dom";
 
 
 const NewUser = () => {
@@ -15,6 +17,8 @@ const NewUser = () => {
     confirmPassword: "",
     phone: null
   });
+
+  const userData = useContext(userDataContext);
 
 
   const handleSignup = async (e) => {
@@ -55,6 +59,10 @@ const NewUser = () => {
       }
     });
   };
+
+  if (!userData?._id) {
+    return <Navigate to={"/login"} />
+  }
 
 
   return (
