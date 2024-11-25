@@ -93,11 +93,6 @@ const AdminManagment = () => {
   }, [userRole, userStatus]);
 
 
-  if (!userData?._id) {
-    return <Navigate to={"/login"} />
-  }
-
-
   return (
     <div className="flex items-center justify-start flex-col gap-2 w-[100vw] p-3">
       <h1 className="font-bold m-3">User List and Controls</h1>

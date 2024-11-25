@@ -19,8 +19,6 @@ const App = () => {
 
     if (res?.data?.success) {
       setUserData(res?.data?.data);
-    } else {
-      toast.error("Failed to fetch user data");
     }
   }
 

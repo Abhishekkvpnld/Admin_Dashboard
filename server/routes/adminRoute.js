@@ -13,7 +13,7 @@ import {
 
 const router = express.Router();
 
-router.post("/login", adminLogin);
+router.post("/login",adminLogin);
 router.get("/user", adminAuth, fetchUserData);
 router.get("/users", adminAuth, allUsers);
 router.put("/update-role", adminAuth, userRoleUpdate);
