@@ -1,9 +1,13 @@
 import { roles, status } from "../data/data";
 import moment from "moment";
+import { useContext } from "react";
 import { MdOutlineDelete } from "react-icons/md";
+import { userDataContext } from "../context/UserContext";
 
 
 const UserCard = ({ users, handleUpdateRole, handleUpdateStatus, handleDeleteUser }) => {
+
+  const { userData } = useContext(userDataContext);
 
   return (
     <div className="md:block px-4 py-2 rounded-md w-full overflow-x-scroll">
@@ -63,6 +67,12 @@ const UserCard = ({ users, handleUpdateRole, handleUpdateStatus, handleDeleteUse
           }
         </tbody>
       </table>
+
+      {!userData?._id && (
+        <div className="font-medium text-slate-500 w-[100vw] flex items-center justify-center mt-5">
+          <p>Please login to access data...</p>
+        </div>
+      )}
     </div>
 
 

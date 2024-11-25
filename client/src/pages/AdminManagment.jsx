@@ -10,28 +10,30 @@ import { userDataContext } from "../context/UserContext";
 
 const AdminManagment = () => {
 
-  const userData = useContext(userDataContext);
-
   const [users, setUsers] = useState([]);
   const [userRole, setUserRole] = useState(users?.role);
   const [userStatus, setUserStatus] = useState([]);
   const [searchData, setSearchData] = useState("");
 
 
-
   const handleUpdateRole = async (id, role) => {
-    const res = await axios.put(`${BACKEND_URL}/admin/update-role`, { id, role }, { withCredentials: true });
-    if (res?.data?.success) {
+    try {
+      const res = await axios.put(`${BACKEND_URL}/admin/update-role`, { id, role }, { withCredentials: true });
       setUserRole(res?.data?.data?.role);
       toast.success(res?.data?.message)
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
     }
+
   }
 
   const handleUpdateStatus = async (id, status) => {
-    const res = await axios.put(`${BACKEND_URL}/admin/update-status`, { id, status }, { withCredentials: true });
-    if (res?.data?.success) {
+    try {
+      const res = await axios.put(`${BACKEND_URL}/admin/update-status`, { id, status }, { withCredentials: true });
       setUserStatus(res?.data?.data?.status);
       toast.success(res?.data?.message)
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
     }
   }
 
@@ -63,24 +65,28 @@ const AdminManagment = () => {
         }
       } catch (error) {
         console.error("Error deleting user:", error);
-        toast.error("Failed to delete user");
+        toast.error(error?.response?.data?.message);
       }
     }
   };
 
   const fetchAllUsers = async () => {
-    const res = await axios.get(`${BACKEND_URL}/admin/users`, { withCredentials: true })
-    if (res?.data?.success) {
-      setUsers(res?.data?.data)
+    try {
+      const res = await axios.get(`${BACKEND_URL}/admin/users`, { withCredentials: true })
+      setUsers(res?.data?.data);
+    } catch (error) {
+      toast.error(error?.response?.data?.message)
     }
   };
 
   const handleSearch = async () => {
     if (searchData) {
-      const res = await axios.get(`${BACKEND_URL}/admin/search?username=${searchData}`, { withCredentials: true });
-      if (res?.data?.success) {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/admin/search?username=${searchData}`, { withCredentials: true });
         setUsers(res?.data?.data);
         toast.success(res?.data?.message)
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
       }
     } else {
       toast.error("Please enter username...❌")

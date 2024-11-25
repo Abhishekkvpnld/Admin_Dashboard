@@ -74,7 +74,7 @@ export const fetchUserData = async (req, res) => {
     const userId = req.user._id;
 
     if (!userId) {
-      throw new Error("Please login first...🔐");
+      return;
     }
 
     const userData = await userModel.findById(userId).lean();

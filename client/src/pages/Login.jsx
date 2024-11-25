@@ -17,19 +17,19 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (values) => {
-
+    try {
     const res = await axios.post(`${BACKEND_URL}/admin/login`, values, { withCredentials: true });
-    if (res?.data?.success) {
-      navigate("/");
-      setUserData(userData);
-      toast.success(res?.data?.message)
-    } else {
-      console.log(res.error.data.message)
+        navigate("/");
+        window.location.reload();
+        setUserData(userData);
+        toast.success(res?.data?.message)
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
     }
 
   };
 
-  const { values, handleChange, handleBlur, handleSubmit, errors, touched } = useFormik({
+  const { values, handleChange, handleBlur, handleSubmit, isSubmitting, errors, touched } = useFormik({
     initialValues: {
       email: "",
       password: ""
@@ -96,7 +96,7 @@ const Login = () => {
           </div>
 
 
-          <button type="submit" className='bg-blue-600 hover:bg-blue-700 w-full max-w-[150px] rounded text-white p-2 px-6 hover:scale-105 transition-all mt-4'>
+          <button disabled={isSubmitting} type="submit" className={`bg-blue-600 hover:bg-blue-700 w-full max-w-[150px] rounded text-white p-2 px-6 hover:scale-105 transition-all mt-4`}>
             Login
           </button>
 

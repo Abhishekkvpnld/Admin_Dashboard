@@ -18,25 +18,17 @@ const NewUser = () => {
   const handleSignup = async (values) => {
       try {
         const response = await axios.post(`${BACKEND_URL}/user/addNew`, values);
-
-        if (response.data.success) {
           toast.success(response.data.message);
           navigate("/")
-        };
-
-        if (response.data.error) {
-          console.log('error', response.data.message);
-          toast.error(response.data.message);
-        };
-
+        
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message);
       };
 
   };
 
 
-  const { values, handleChange, handleBlur, handleSubmit, errors, touched } = useFormik({
+  const { values, handleChange, handleBlur, isSubmitting,handleSubmit, errors, touched } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -184,7 +176,7 @@ const NewUser = () => {
             <span className="text-red-500 text-xs">{errors.confirmPassword}</span>
           </div>
 
-          <button type="submit" className='bg-green-600 hover:bg-green-700 w-full max-w-[150px] rounded text-white p-2 px-6 hover:scale-105 transition-all mt-4'>
+          <button disabled={isSubmitting} type="submit" className='bg-green-600 hover:bg-green-700 w-full max-w-[150px] rounded text-white p-2 px-6 hover:scale-105 transition-all mt-4'>
             Create
           </button>
 
