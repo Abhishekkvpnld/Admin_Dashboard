@@ -5,7 +5,6 @@ import { filterData } from "../data/data";
 import { BACKEND_URL } from "../utils/base_api";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Navigate } from "react-router-dom";
 import { userDataContext } from "../context/UserContext";
 
 const AdminManagment = () => {
@@ -15,6 +14,7 @@ const AdminManagment = () => {
   const [userStatus, setUserStatus] = useState([]);
   const [searchData, setSearchData] = useState("");
 
+  
 
   const handleUpdateRole = async (id, role) => {
     try {
@@ -62,6 +62,7 @@ const AdminManagment = () => {
         const res = await axios.delete(`${BACKEND_URL}/admin/delete-user/${id}`, { withCredentials: true });
         if (res?.data?.success) {
           toast.success(res?.data?.message);
+          setUsers(users.filter((user)=>user._id !== id))
         }
       } catch (error) {
         console.error("Error deleting user:", error);

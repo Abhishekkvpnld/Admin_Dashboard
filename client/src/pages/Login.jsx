@@ -8,6 +8,7 @@ import { BACKEND_URL } from "../utils/base_api";
 import { userDataContext } from "../context/UserContext";
 import { useFormik } from "formik";
 import { loginSchema } from "../schemas/schema";
+import LoadingPage from "../components/LoadingPage";
 
 
 const Login = () => {
@@ -15,31 +16,37 @@ const Login = () => {
   const navigate = useNavigate();
   const { userData, setUserData } = useContext(userDataContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
   const handleLogin = async (values) => {
+    setLoading(true)
     try {
-    const res = await axios.post(`${BACKEND_URL}/admin/login`, values, { withCredentials: true });
-        navigate("/");
-        window.location.reload();
-        setUserData(userData);
-        toast.success(res?.data?.message)
+      const res = await axios.post(`${BACKEND_URL}/admin/login`, values, { withCredentials: true });
+      navigate("/");
+      window.location.reload();
+      setUserData(userData);
+      toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false)
     }
-
   };
+
 
   const { values, handleChange, handleBlur, handleSubmit, isSubmitting, errors, touched } = useFormik({
     initialValues: {
-      email: "",
-      password: ""
+      email: "admin@gmail.com",
+      password: "Admin@123"
     },
     validationSchema: loginSchema,
     onSubmit: handleLogin
   })
 
 
-  return (
+
+  return loading ? <LoadingPage /> : (
     <div className='mx-auto container p-5 md:w-[50vw] h-[100vh] flex items-center justify-center'>
 
       <div className='border border-gray-300 w-full py-2 mx-auto rounded p-3  shadow-lg'>

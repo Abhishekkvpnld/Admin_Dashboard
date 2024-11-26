@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { createUserSchema } from "../schemas/schema";
 import { BACKEND_URL } from "../utils/base_api";
+import LoadingPage from "../components/LoadingPage";
 
 
 const NewUser = () => {
@@ -13,22 +14,26 @@ const NewUser = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const handleSignup = async (values) => {
-      try {
-        const response = await axios.post(`${BACKEND_URL}/user/addNew`, values);
-          toast.success(response.data.message);
-          navigate("/")
-        
-      } catch (error) {
-        toast.error(error?.response?.data?.message);
-      };
+    setLoading(true);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/user/addNew`, values);
+      toast.success(response.data.message);
+      navigate("/")
+
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
 
   };
 
 
-  const { values, handleChange, handleBlur, isSubmitting,handleSubmit, errors, touched } = useFormik({
+  const { values, handleChange, handleBlur, isSubmitting, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -41,7 +46,7 @@ const NewUser = () => {
   })
 
 
-  return (
+  return loading ? <LoadingPage /> : (
     <div className='mx-auto container p-5 w-[100vw] flex flex-col items-center justify-center'>
 
       <h1 className="font-bold text-xl m-3">Register a New User!</h1>
@@ -162,7 +167,7 @@ const NewUser = () => {
                 onBlur={handleBlur}
                 required
                 placeholder='confirm password...'
-                className={`w-full h-full outline-none bg-transparent p-2 rounded-md`}/>
+                className={`w-full h-full outline-none bg-transparent p-2 rounded-md`} />
 
               <div className='cursor-pointer flex items-center' onClick={() => setShowConfirmPassword((prev) => !prev)}>
                 <span className="mr-2">

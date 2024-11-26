@@ -30,7 +30,7 @@ const App = () => {
   return (
     <Router>
 
-      <userDataContext.Provider value={{ userData, setUserData }}>
+      <userDataContext.Provider value={{ userData, setUserData,fetchUserData }}>
         <Routes>
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/new-user" element={<Layout><NewUser /></Layout>} />
